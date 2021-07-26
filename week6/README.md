@@ -47,5 +47,10 @@ Unit Test: 외부 의존
 
 ## HW
 
-- PUT, DELETE test case
-- Mocking의 의의 찾아보기
+**1.  PUT, DELETE test case**
+
+Q. `PUT` 관련된 test만들 때 기존의 `this.catRepo.update()` 함수의 return값을 `toEqual()`에 어떤 형식으로 받아주어야 할지를 몰라서 임의로 `cat.service.ts` 파일 속의 `update`함수의 return값을 dto.name을 줘서 testing하였는데 더 현명한 방식이 있을지.
+
+<br>
+
+**2.  Mocking의 의의 찾아보기**
