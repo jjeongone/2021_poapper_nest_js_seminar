@@ -10,14 +10,12 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { SeminarService } from './seminar.service';
-import { ApiBody, ApiTags } from '@nestjs/swagger';
 import { SeminarDto } from './seminar.dto';
 import { AccountRoles } from '../auth/roles.decorator';
 import { AccountType } from '../account/account.meta';
 import { AuthGuard } from '@nestjs/passport';
 import { RolesGuard } from '../auth/roles.guard';
 
-@ApiTags('Seminar')
 @Controller('seminar')
 export class SeminarController {
   constructor(private readonly seminarService: SeminarService) {}
@@ -25,7 +23,6 @@ export class SeminarController {
   @Post()
   @AccountRoles(AccountType.instructor, AccountType.admin)
   @UseGuards(AuthGuard('jwt'), RolesGuard)
-  @ApiBody({ type: SeminarDto })
   post(@Body() dto: SeminarDto) {
     return this.seminarService.save(dto);
   }
