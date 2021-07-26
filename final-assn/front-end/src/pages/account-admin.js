@@ -27,6 +27,8 @@ export default class AccountAdmin extends Component {
             console.log(this.state.accounts);
         } catch(err) {
             console.log(err);
+            alert("등록되지 않은 계정입니다");
+            this.props.history.push('/');
         }
     }
 
@@ -39,9 +41,22 @@ export default class AccountAdmin extends Component {
         }
     }
 
+    LogoutHandler = async (e) => {
+        try {
+            await axios.get(`${process.env.REACT_APP_API_URL}/auth/logout`, {withCredentials: true})
+            this.props.history.push('/');
+        } catch (err) {
+
+        }
+    }
+
     render() {
         return(
             <div>
+                <h3>로그아웃</h3>
+                <div>
+                    <input type="button" value="로그아웃" onClick={this.LogoutHandler}/>
+                </div>
                 <h1>유저 관리</h1>
                 <h2>유저 목록</h2>
                 <UserTable>

@@ -8,11 +8,18 @@ export default class Main extends Component{
         const id = document.getElementById('login_id').value;
         const password = document.getElementById('login_password').value;
         try {
-            await axios.post(`${process.env.REACT_APP_API_URL}/auth/login`, {
+            const login_user = await axios.post(`${process.env.REACT_APP_API_URL}/auth/login`, {
                 id: id,
                 password: password
             }, {withCredentials: true})
-            this.props.history.push('/home');
+            const user_account_type = login_user.data.account_type;
+            if (user_account_type == 'STUDENT') {
+                this.props.history.push('/home');
+            } else if (user_account_type == 'INSTRUCTOR') {
+                this.props.history.push('/seminar-instructor');
+            } else if (user_account_type == 'ADMIN') {
+                this.props.history.push('/account-admin');
+            }
         } catch(err) {
 
         }
@@ -38,6 +45,15 @@ export default class Main extends Component{
         }
     }
 
+    LogoutHandler = async (e) => {
+        try {
+            await axios.get(`${process.env.REACT_APP_API_URL}/auth/logout`, {withCredentials: true})
+            this.props.history.push('/');
+        } catch (err) {
+
+        }
+    }
+
     render() {
         return (
             <div>
@@ -58,6 +74,12 @@ export default class Main extends Component{
                         </form>
                     </LoginBody>
                 </Login>
+                <Logout>
+                    <h3>로그아웃</h3>
+                    <div>
+                        <input type="button" value="로그아웃" onClick={this.LogoutHandler}/>
+                    </div>
+                </Logout>
                 <Register>
                     <RegisterTitle>회원가입</RegisterTitle>
                     <RegisterBody>
@@ -66,7 +88,7 @@ export default class Main extends Component{
                                 이름: <input id="register_name" type="text" name="name" />
                             </div>
                             <div>
-                                계정종류(Student/Instructor/Admin): <input id="register_type" type="text" name="account_type" />
+                                계정종류(STUDENT/INSTRUCTOR/ADMIN): <input id="register_type" type="text" name="account_type" />
                             </div>
                             <div>
                                 아이디: <input id="register_id" type="text" name="id" />
@@ -104,6 +126,11 @@ const LoginTitle = styled.h3`
 
 const LoginBody = styled.div`
   text-align: center;
+`
+
+const Logout = styled.div`
+  text-align: center;
+  padding: 5px;
 `
 
 const Register = styled.div`

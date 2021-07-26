@@ -38,9 +38,22 @@ export default class Seminar extends Component {
         }
     }
 
+    LogoutHandler = async (e) => {
+        try {
+            await axios.get(`${process.env.REACT_APP_API_URL}/auth/logout`, {withCredentials: true})
+            this.props.history.push('/');
+        } catch (err) {
+
+        }
+    }
+
     render() {
         return(
             <div>
+                <h3>로그아웃</h3>
+                <div>
+                    <input type="button" value="로그아웃" onClick={this.LogoutHandler}/>
+                </div>
                 <h1>세미나 신청</h1>
                 <h2>세미나 신청 현황</h2>
                     <SeminarTable>
