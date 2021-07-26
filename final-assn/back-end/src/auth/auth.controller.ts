@@ -12,6 +12,9 @@ import { AuthGuard } from '@nestjs/passport';
 import { AccountService } from '../account/account.service';
 import { Request, Response } from 'express';
 import { AccountDto } from '../account/account.dto';
+import { AccountRoles } from './roles.decorator';
+import { AccountType } from '../account/account.meta';
+import { RolesGuard } from './roles.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -68,5 +71,13 @@ export class AuthController {
         });
       return userInformation;
     }
+  }
+
+  @Get('valid')
+  @AccountRoles(AccountType.instructor, AccountType.admin)
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  isValid(@Req() req: Request) {
+    const user: any = req.user;
+    return user;
   }
 }

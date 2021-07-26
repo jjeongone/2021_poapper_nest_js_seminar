@@ -30,8 +30,17 @@ export class SeminarProgressController {
   }
 
   @Get()
-  get(@Query('seminar_uuid') seminar_uuid: string) {
-    if (seminar_uuid) {
+  get(
+    @Query('user_uuid') user_uuid: string,
+    @Query('seminar_uuid') seminar_uuid: string,
+  ) {
+    if (user_uuid) {
+      return this.seminarProgressService.find({
+        where: { user_uuid: user_uuid },
+        order: { created_at: 'DESC' },
+        relations: ['user_uuid', 'seminar_uuid'],
+      });
+    } else if (seminar_uuid) {
       return this.seminarProgressService.find({
         where: { seminar_uuid: seminar_uuid },
         order: { created_at: 'DESC' },
